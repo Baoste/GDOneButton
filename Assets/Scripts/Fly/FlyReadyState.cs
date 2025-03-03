@@ -23,7 +23,7 @@ public class FlyReadyState : FlyState
     {
         base.Update();
         time += Time.deltaTime;
-        if (time > 1.5f)
+        if (time > .8f)
         {
             stateMachine.ChangeState(fly.suckState);
         }

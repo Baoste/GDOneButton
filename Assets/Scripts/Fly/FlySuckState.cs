@@ -16,6 +16,7 @@ public class FlySuckState : FlyState
         time = 0f;
         suckTime = 0f;
         fly.GetComponent<SpriteRenderer>().color = Color.red;
+        fly.player.health -= fly.suckDamage;
     }
 
     public override void Exit()
@@ -28,10 +29,10 @@ public class FlySuckState : FlyState
         base.Update();
         time += Time.deltaTime;
         suckTime += Time.deltaTime;
-        if (suckTime > 1f)
+        if (suckTime > fly.suckDelTime)
         {
             suckTime = 0f;
-            fly.player.health -= 5f;
+            fly.player.health -= fly.suckDamage;
         }
         if (time > 5.1f)
         {

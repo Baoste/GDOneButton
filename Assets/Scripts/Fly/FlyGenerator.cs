@@ -12,35 +12,73 @@ public class FlyGenerator : MonoBehaviour
 {
     public GameObject flyPrefab;
     public Queue<Fly> flies;
-    private float gameTime;
+    
+    private float generateTime;
+    private float generateDelTime;
+    private float flyInTime;
+    private int fliesNum;
+    private int maxNum;
     private List<Vector3> startPosList;
     private List<Vector3> stopPosList;
+    private float width;
+    private float height;
+
+    public GameManager gameManager;
 
     void Start()
     {
-        gameTime = 0;
+        width = 10f;
+        height = 14f;
+        generateTime = 0f;
+        generateDelTime = 3f;
+        flyInTime = 2f;
+        fliesNum = 0;
         flies = new Queue<Fly>();
         startPosList = new List<Vector3>();
         stopPosList = new List<Vector3>();
-        Generate(20f, 20f, 10);
+        GenerateStartPos(width, height, 50);
+        GenerateStopPos(width, height, 1.0f, 50);
+        maxNum = stopPosList.Count;
     }
 
 
     void Update()
     {
-        gameTime += Time.deltaTime;
+        generateTime += Time.deltaTime;
+        if (gameManager.gameTime < 7f) 
+        {
+            generateDelTime = Random.Range(1.5f, 2f);
+            flyInTime = 2f;
+        }
+        else if (gameManager.gameTime < 15f)
+        {
+            generateDelTime = Random.Range(0.8f, 1f);
+            flyInTime = 1f;
+        }
+        else
+        {
+            generateDelTime = Random.Range(0.5f, 0.8f);
+            flyInTime = 1f;
+        }
+
+        if (generateTime > generateDelTime)
+        {
+            generateTime = 0f;
+            Generate(Random.Range(2,5));
+        }
     }
 
-    private void Generate(float width, float height, int count)
+    private void Generate(int count)
     {
-        GenerateStartPos(width, height, count);
-        GenerateStopPos(width, height, 2f, count);
         for (int i = 0; i < count; i++)
         {
-            Fly fly = Instantiate(flyPrefab, startPosList[i] + transform.position, Quaternion.identity).GetComponent<Fly>();
+            fliesNum++;
+            int idx = fliesNum % maxNum;
+            Fly fly = Instantiate(flyPrefab, startPosList[idx] + transform.position, Quaternion.identity).GetComponent<Fly>();
+            fly.flyInTime = flyInTime;
             flies.Enqueue(fly);
-            fly.inPos = startPosList[i] + transform.position;
-            fly.stopPos = stopPosList[i] + transform.position;
+            fly.inPos = startPosList[idx] + transform.position;
+            fly.stopPos = stopPosList[idx] + transform.position;
             fly.curvePos = fly.inPos + fly.stopPos;
         }
     }
@@ -78,7 +116,7 @@ public class FlyGenerator : MonoBehaviour
         float cellSize = minDist / Mathf.Sqrt(2);
         int cols = Mathf.FloorToInt(width / cellSize);
         int rows = Mathf.FloorToInt(height / cellSize);
-        Vector3?[,] grid = new Vector3?[cols, rows];
+        Vector3?[,] grid = new Vector3?[rows, cols];
 
         float x = width / 2;
         float y = height / 2;
