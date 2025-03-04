@@ -15,10 +15,15 @@ public class Fly : MonoBehaviour
 
     // Attr
     public float flyInTime;
+    public float flyReadyTime;
     public Vector3 inPos;
     public Vector3 curvePos;
     public Vector3 stopPos;
+
+    // ÊıÖµ
+    // ÎüÑª¼ä¸ô
     public float suckDelTime { get; private set; }
+    // ÎüÑªÉËº¦
     public float suckDamage { get; private set; }
 
     public Player player;
@@ -35,6 +40,7 @@ public class Fly : MonoBehaviour
         outState = new FlyOutState(stateMachine, this, "Out");
         
         flyInTime = 2f;
+        flyReadyTime = 0.8f;
     }
 
     void Start()

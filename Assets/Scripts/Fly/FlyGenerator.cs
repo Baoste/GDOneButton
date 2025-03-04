@@ -13,9 +13,14 @@ public class FlyGenerator : MonoBehaviour
     public GameObject flyPrefab;
     public Queue<Fly> flies;
     
-    private float generateTime;
+    // 蚊子生成间隔
     private float generateDelTime;
+    // 蚊子飞入时间
     private float flyInTime;
+    // 蚊子吸血准备时间
+    public float flyReadyTime { get; private set; }
+
+    private float generateTime;
     private int fliesNum;
     private int maxNum;
     private List<Vector3> startPosList;
@@ -27,11 +32,14 @@ public class FlyGenerator : MonoBehaviour
 
     void Start()
     {
+        // 数值在这里设置
+        generateDelTime = 3f;
+        flyInTime = 2f;
+        flyReadyTime = .8f;
+        
         width = 10f;
         height = 14f;
         generateTime = 0f;
-        generateDelTime = 3f;
-        flyInTime = 2f;
         fliesNum = 0;
         flies = new Queue<Fly>();
         startPosList = new List<Vector3>();
@@ -76,6 +84,7 @@ public class FlyGenerator : MonoBehaviour
             int idx = fliesNum % maxNum;
             Fly fly = Instantiate(flyPrefab, startPosList[idx] + transform.position, Quaternion.identity).GetComponent<Fly>();
             fly.flyInTime = flyInTime;
+            fly.flyReadyTime = flyReadyTime;
             flies.Enqueue(fly);
             fly.inPos = startPosList[idx] + transform.position;
             fly.stopPos = stopPosList[idx] + transform.position;
