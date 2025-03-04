@@ -22,7 +22,7 @@ public class Fly : MonoBehaviour
     public float suckDamage { get; private set; }
 
     public Player player;
-    public GameManager gameManager;
+    public GameSwitch gameManager;
     public FlyGenerator generator;
 
     private void Awake()
@@ -41,7 +41,7 @@ public class Fly : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player = FindAnyObjectByType<Player>();
-        gameManager = FindAnyObjectByType<GameManager>();
+        gameManager = FindAnyObjectByType<GameSwitch>();
         generator = FindAnyObjectByType<FlyGenerator>();
         stateMachine.Initialize(inState);
     }

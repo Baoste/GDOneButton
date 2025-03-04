@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameSwitch : MonoBehaviour
 {
     public float gameTime;
     // Start is called before the first frame update

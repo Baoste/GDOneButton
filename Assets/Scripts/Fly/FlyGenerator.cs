@@ -23,7 +23,7 @@ public class FlyGenerator : MonoBehaviour
     private float width;
     private float height;
 
-    public GameManager gameManager;
+    public GameSwitch gameManager;
 
     void Start()
     {
