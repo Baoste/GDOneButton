@@ -25,7 +25,8 @@ public class Player : MonoBehaviour
         {
             if (generator.flies.Count <= 0)
             {
-                hitCoolTime = 3f;
+                //hitCoolTime = 3f;
+                health -= 10f;
                 Debug.Log("FAIL");
             }
             else
@@ -34,7 +35,8 @@ public class Player : MonoBehaviour
                 if (fly.stateMachine.currentState != fly.suckState && fly.stateMachine.currentState != fly.readyState)
                 {
                     fly.stateMachine.ChangeState(fly.outState);
-                    hitCoolTime = 3f;
+                    health -= 10f;
+                    //hitCoolTime = 3f;
                     Debug.Log("FAIL");
                 }
                 else

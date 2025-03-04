@@ -45,14 +45,14 @@ public class FlyGenerator : MonoBehaviour
     void Update()
     {
         generateTime += Time.deltaTime;
-        if (gameManager.gameTime < 7f) 
+        if (gameManager.gameTime < 30f) 
         {
-            generateDelTime = Random.Range(1.5f, 2f);
-            flyInTime = 2f;
+            generateDelTime = Random.Range(2f, 4f);
+            flyInTime = 3f;
         }
-        else if (gameManager.gameTime < 15f)
+        else if (gameManager.gameTime < 60f)
         {
-            generateDelTime = Random.Range(0.8f, 1f);
+            generateDelTime = Random.Range(1f,2f);
             flyInTime = 1f;
         }
         else
@@ -64,7 +64,7 @@ public class FlyGenerator : MonoBehaviour
         if (generateTime > generateDelTime)
         {
             generateTime = 0f;
-            Generate(Random.Range(2,5));
+            Generate(Random.Range(1,3));
         }
     }
 
