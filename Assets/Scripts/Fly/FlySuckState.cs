@@ -15,7 +15,6 @@ public class FlySuckState : FlyState
         base.Enter();
         time = 0f;
         suckTime = 0f;
-        fly.GetComponent<SpriteRenderer>().color = Color.red;
         fly.player.health -= fly.suckDamage;
     }
 

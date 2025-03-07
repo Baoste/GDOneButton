@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,16 +12,23 @@ public class FlyDeadState : FlyState
     public override void Enter()
     {
         base.Enter();
-        fly.DestroySelf();
+        fly.generator.flies.Dequeue();
     }
 
     public override void Exit()
     {
         base.Exit();
+        fly.DestroySelf();
     }
 
     public override void Update()
     {
         base.Update();
+        //float timer = 0;
+        //Tween t = DOTween.To(() => timer, x => timer = x, 1, 2f)
+        //              .OnStepComplete(() =>
+        //              {
+        //                  stateMachine.ChangeState(fly.readyState);
+        //              });
     }
 }

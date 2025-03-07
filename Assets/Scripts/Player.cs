@@ -31,7 +31,8 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Fly fly = generator.flies.Dequeue();
+                // Fly fly = generator.flies.Dequeue();
+                Fly fly = generator.flies.Peek();
                 if (fly.stateMachine.currentState != fly.suckState && fly.stateMachine.currentState != fly.readyState)
                 {
                     fly.stateMachine.ChangeState(fly.outState);

@@ -18,4 +18,11 @@ public class BezierCurve
     {
         return (1 - t) * (1 - t) * pos0 + 2 * t * (1 - t) * pos1 + t * t * pos2;
     }
+
+    public Vector3 GetTangent(float t)
+    {
+        Vector3 vec = (-2 + 2 * t) * pos0 + (2 - 4 * t) * pos1 + 2 * t * pos2; 
+        vec.Normalize(); 
+        return vec;
+    }
 }
