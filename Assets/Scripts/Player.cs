@@ -19,12 +19,14 @@ public class Player : MonoBehaviour
     public float health;
 
     private CinemachineImpulseSource shake;
+    private CinemachineImpulseSource impulseSource;
     private RandMath rmath;
     void Start()
     {
         health = 100;
         rmath = new RandMath();
         shake = GetComponent<CinemachineImpulseSource>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
         angryPrint.SetActive(false);
         failUI.SetActive(false);
         // DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 3000, sequencesCapacity: 200);
@@ -36,7 +38,6 @@ public class Player : MonoBehaviour
         if (health > 0 && Input.GetKeyDown(KeyCode.Space))
         {
             audioManager.PlaySfx(audioManager.hit);
-            shake.GenerateImpulse();
             if (generator.flies.Count <= 0)
             {
                 GenerateHitEffect(null);
@@ -72,6 +73,8 @@ public class Player : MonoBehaviour
         {
             audioManager.PlaySfx(audioManager.yall);
             angryPrint.SetActive(true);
+            impulseSource.m_DefaultVelocity = new Vector3(.5f, .5f, 0);
+            shake.GenerateImpulse();
             Vector3 pos = rmath.RandomPosition(generator.width, generator.height, generator.transform.position);
             Quaternion rot = rmath.RandomRotation();
             Instantiate(palmPrint, pos, rot);
@@ -83,9 +86,14 @@ public class Player : MonoBehaviour
             {
                 audioManager.PlaySfx(audioManager.yall);
                 angryPrint.SetActive(true);
+                impulseSource.m_DefaultVelocity = new Vector3(.5f, .5f, 0);
             }
-            else 
+            else
+            {
+                impulseSource.m_DefaultVelocity = new Vector3(.1f, .1f, 0);
                 angryPrint.SetActive(false);
+            }
+            shake.GenerateImpulse();
             Quaternion rot = rmath.RandomRotation();
             Instantiate(palmPrint, fly.transform.position, rot);
             Instantiate(soundPrint, fly.transform.position, rot);
