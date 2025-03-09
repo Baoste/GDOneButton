@@ -1,17 +1,13 @@
-using JetBrains.Annotations;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using Unity.Collections;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 public class FlyGenerator : MonoBehaviour
 {
     public GameObject flyPrefab;
     public Queue<Fly> flies;
+    public Player player;
     
     // 蚊子生成间隔
     private float generateDelTime;
@@ -37,6 +33,7 @@ public class FlyGenerator : MonoBehaviour
         generateDelTime = 3f;
         flyInTime = 2f;
         flyReadyTime = .8f;
+        // ！ 通过player.hitCount读取连击数
         
         width = 10f;
         height = 14f;

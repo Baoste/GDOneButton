@@ -1,10 +1,8 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Player : MonoBehaviour
 {
@@ -17,13 +15,18 @@ public class Player : MonoBehaviour
     public FlyGenerator generator;
     public Scrollbar Scrollbar;
     public float health;
+    public int hitCount;
+    public int flyDeadCount;
+    public TMP_Text tmp;
 
     private CinemachineImpulseSource shake;
     private CinemachineImpulseSource impulseSource;
     private RandMath rmath;
     void Start()
     {
-        health = 100;
+        health = 100f;
+        hitCount = 0;
+        flyDeadCount = 0;
         rmath = new RandMath();
         shake = GetComponent<CinemachineImpulseSource>();
         impulseSource = GetComponent<CinemachineImpulseSource>();
@@ -34,27 +37,32 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        tmp.text = "x " + hitCount;
         Scrollbar.size = health / 100f;
-        if (health > 0 && Input.GetKeyDown(KeyCode.Space))
+        if (health > 0 && Input.GetKeyUp(KeyCode.Space))
         {
             audioManager.PlaySfx(audioManager.hit);
             if (generator.flies.Count <= 0)
             {
                 GenerateHitEffect(null);
                 health -= 10f;
+                hitCount = 0;
             }
             else
             {
-                // Fly fly = generator.flies.Dequeue();
                 Fly fly = generator.flies.Peek();
                 if (fly.stateMachine.currentState != fly.suckState && fly.stateMachine.currentState != fly.readyState)
                 {
                     GenerateHitEffect(fly, false);
                     fly.stateMachine.ChangeState(fly.outState);
                     health -= 10f;
+                    hitCount = 0;
                 }
+                // ³É¹¦
                 else
                 {
+                    hitCount += 1;
+                    flyDeadCount += 1;
                     GenerateHitEffect(fly);
                     fly.stateMachine.ChangeState(fly.deadState);
                 }
