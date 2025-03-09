@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,27 +8,39 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public GameObject palmPrint;
+    public GameObject soundPrint;
+    public GameObject angryPrint;
+    public GameObject failUI;
+
+    public AudioManager audioManager;
     public FlyGenerator generator;
     public Scrollbar Scrollbar;
     public float health;
-    public float hitCoolTime {  get; private set; }
+
+    private CinemachineImpulseSource shake;
+    private RandMath rmath;
     void Start()
     {
         health = 100;
-        hitCoolTime = 0f;
+        rmath = new RandMath();
+        shake = GetComponent<CinemachineImpulseSource>();
+        angryPrint.SetActive(false);
+        failUI.SetActive(false);
+        // DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 3000, sequencesCapacity: 200);
     }
 
     void Update()
     {
-        hitCoolTime -= Time.deltaTime;
         Scrollbar.size = health / 100f;
-        if (hitCoolTime < 0f && Input.GetKeyDown(KeyCode.Space))
+        if (health > 0 && Input.GetKeyDown(KeyCode.Space))
         {
+            audioManager.PlaySfx(audioManager.hit);
+            shake.GenerateImpulse();
             if (generator.flies.Count <= 0)
             {
-                //hitCoolTime = 3f;
+                GenerateHitEffect(null);
                 health -= 10f;
-                Debug.Log("FAIL");
             }
             else
             {
@@ -35,17 +48,47 @@ public class Player : MonoBehaviour
                 Fly fly = generator.flies.Peek();
                 if (fly.stateMachine.currentState != fly.suckState && fly.stateMachine.currentState != fly.readyState)
                 {
+                    GenerateHitEffect(fly, false);
                     fly.stateMachine.ChangeState(fly.outState);
                     health -= 10f;
-                    //hitCoolTime = 3f;
-                    Debug.Log("FAIL");
                 }
                 else
                 {
+                    GenerateHitEffect(fly);
                     fly.stateMachine.ChangeState(fly.deadState);
-                    Debug.Log("SUCCESS");
                 }
             }
+        }
+        if (health <= 0)
+        {
+            failUI.SetActive(true);
+            generator.enabled = false;
+        }
+    }
+
+    private void GenerateHitEffect(Fly fly, bool flag=true)
+    {
+        if (fly == null)
+        {
+            audioManager.PlaySfx(audioManager.yall);
+            angryPrint.SetActive(true);
+            Vector3 pos = rmath.RandomPosition(generator.width, generator.height, generator.transform.position);
+            Quaternion rot = rmath.RandomRotation();
+            Instantiate(palmPrint, pos, rot);
+            Instantiate(soundPrint, pos, rot);
+        }
+        else
+        {
+            if (!flag)
+            {
+                audioManager.PlaySfx(audioManager.yall);
+                angryPrint.SetActive(true);
+            }
+            else 
+                angryPrint.SetActive(false);
+            Quaternion rot = rmath.RandomRotation();
+            Instantiate(palmPrint, fly.transform.position, rot);
+            Instantiate(soundPrint, fly.transform.position, rot);
         }
     }
 }

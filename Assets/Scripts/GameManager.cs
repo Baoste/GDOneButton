@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSwitch : MonoBehaviour
 {
@@ -15,5 +16,14 @@ public class GameSwitch : MonoBehaviour
     void Update()
     {
         gameTime += Time.deltaTime;
+    }
+
+    public void Menu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+    public void Replay()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

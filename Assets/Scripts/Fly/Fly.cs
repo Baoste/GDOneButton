@@ -68,20 +68,20 @@ public class Fly : MonoBehaviour
 
     private void DataChange()
     {
-        if (gameManager.gameTime < 30f)
+        if (gameManager.gameTime < 20f)
         {
             suckDelTime = 1f;
             suckDamage = 1f;
         }
-        else if (gameManager.gameTime < 60f)
+        else if (gameManager.gameTime < 40f)
         {
-            suckDelTime = 1f;
-            suckDamage = 2f + 0.2f * ((gameManager.gameTime - 30f) / 10f);
+            suckDelTime = 0.8f - 0.07f * ((gameManager.gameTime - 40f) / 10f);
+            suckDamage = 2f + 0.5f * ((gameManager.gameTime - 40f) / 10f);
         }
-        else if (gameManager.gameTime < 150f)
+        else if (gameManager.gameTime < 100f)
         {
-            suckDelTime = 0.8f - 0.05f * ((gameManager.gameTime - 60f) / 10f);
-            suckDamage = 2f + 0.2f * ((gameManager.gameTime - 30f) / 10f);
+            suckDelTime = 0.38f;
+            suckDamage = 2f + 0.2f * ((gameManager.gameTime - 40f) / 10f);
         }
         else
         {

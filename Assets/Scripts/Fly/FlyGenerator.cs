@@ -25,10 +25,11 @@ public class FlyGenerator : MonoBehaviour
     private int maxNum;
     private List<Vector3> startPosList;
     private List<Vector3> stopPosList;
-    private float width;
-    private float height;
+    public float width { get; private set; }
+    public float height { get; private set; }
 
     public GameSwitch gameManager;
+    public AudioManager audioManager;
 
     void Start()
     {
@@ -53,26 +54,50 @@ public class FlyGenerator : MonoBehaviour
     void Update()
     {
         generateTime += Time.deltaTime;
-        if (gameManager.gameTime < 30f) 
+        if (gameManager.gameTime < 20f) 
         {
-            generateDelTime = Random.Range(2f, 4f);
+            flyReadyTime = .8f;
+        }
+        else if (gameManager.gameTime < 40f)
+        {
+            flyReadyTime = Random.Range(0.5f, 0.8f);
+        }
+        else
+        {
+            flyReadyTime = Random.Range(0.4f, 0.6f);
+        }
+
+        if (gameManager.gameTime < 20f)
+        {
+            generateDelTime = Random.Range(2f, 3f);
+        }
+        else if (gameManager.gameTime < 60f)
+        {
+            generateDelTime = Random.Range((2f - (gameManager.gameTime - 20f) / 10f * 0.3f), (3f - (gameManager.gameTime - 20f) / 10f * 0.25f));
+        }
+        else
+        {
+            generateDelTime = Random.Range(0.8f, 1.8f);
+        }
+
+        if (gameManager.gameTime < 20f)
+        {
             flyInTime = 3f;
         }
         else if (gameManager.gameTime < 60f)
         {
-            generateDelTime = Random.Range(1f,2f);
-            flyInTime = 1f;
+            flyInTime = Random.Range((3f - (gameManager.gameTime - 20f) / 10f * 0.375f), (3f - (gameManager.gameTime - 20f) / 10f * 0.25f));
         }
         else
         {
-            generateDelTime = Random.Range(0.5f, 0.8f);
-            flyInTime = 1f;
+            flyInTime = Random.Range(1f, 2f);
         }
 
         if (generateTime > generateDelTime)
         {
             generateTime = 0f;
             Generate(Random.Range(1,3));
+            audioManager.PlaySfx(audioManager.fly);
         }
     }
 
