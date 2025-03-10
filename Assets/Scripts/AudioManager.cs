@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip hit;
     public AudioClip yall;
     public AudioClip fly;
+    public AudioClip flush;
 
     void Start()
     {

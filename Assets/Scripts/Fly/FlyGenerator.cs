@@ -43,7 +43,7 @@ public class FlyGenerator : MonoBehaviour
         startPosList = new List<Vector3>();
         stopPosList = new List<Vector3>();
         GenerateStartPos(width, height, 50);
-        GenerateStopPos(width, height, 1.0f, 50);
+        GenerateStopPos(width, height, 1f, 50);
         maxNum = stopPosList.Count;
     }
 
@@ -79,15 +79,15 @@ public class FlyGenerator : MonoBehaviour
 
         if (gameManager.gameTime < 20f)
         {
-            flyInTime = 3f;
+            flyInTime = 4f;
         }
         else if (gameManager.gameTime < 60f)
         {
-            flyInTime = Random.Range((3f - (gameManager.gameTime - 20f) / 10f * 0.375f), (3f - (gameManager.gameTime - 20f) / 10f * 0.25f));
+            flyInTime = Random.Range(((3.3f - (gameManager.gameTime - 20f) / 10f * 0.1f) - (player.hitCount / 7f)), ((4f - (gameManager.gameTime - 20f) / 10f * 0.1f) - (player.hitCount / 7f)));
         }
         else
         {
-            flyInTime = Random.Range(1f, 2f);
+            flyInTime = Random.Range(2.8f - (player.hitCount / 5f), 3.5f - (player.hitCount / 5f));
         }
 
         if (generateTime > generateDelTime)

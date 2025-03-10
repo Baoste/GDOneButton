@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class RandMath
 { 
-    public Quaternion RandomRotation()
+    public Quaternion RandomRotation(float rangeL, float rangeR)
     {
-        float angle = Random.Range(-90f, 0f);
+        float angle = Random.Range(rangeL, rangeR);
         Quaternion q = Quaternion.Euler(0, 0, angle);
         return q * Quaternion.identity;
     }

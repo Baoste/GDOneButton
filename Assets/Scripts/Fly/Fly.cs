@@ -72,18 +72,18 @@ public class Fly : MonoBehaviour
         }
         else if (gameManager.gameTime < 40f)
         {
-            suckDelTime = 0.8f - 0.07f * ((gameManager.gameTime - 40f) / 10f);
-            suckDamage = 2f + 0.5f * ((gameManager.gameTime - 40f) / 10f);
+            suckDelTime = 0.8f - 0.07f * ((gameManager.gameTime - 20f) / 10f);
+            suckDamage = 2f + 0.3f * ((gameManager.gameTime - 20f) / 10f);
         }
         else if (gameManager.gameTime < 100f)
         {
-            suckDelTime = 0.38f;
-            suckDamage = 2f + 0.2f * ((gameManager.gameTime - 40f) / 10f);
+            suckDelTime = 0.5f;
+            suckDamage = 2.6f + 0.2f * ((gameManager.gameTime - 40f) / 10f);
         }
         else
         {
             suckDelTime = 0.4f;
-            suckDamage = 4.5f;
+            suckDamage = 3.8f;
         }
     }
 }
